@@ -27,3 +27,22 @@ func HandleError(err error) {
 		log.Fatal(err)
 	}
 }
+
+//SetStaticContentPath : Set the path from where the static content will be served
+func SetStaticContentPath(mapping string, path string) {
+	log.Println("Static content will be loaded for mapping", mapping, "from path", path)
+	fileSystem := http.FileServer(http.Dir(path))
+	http.Handle(mapping, http.StripPrefix(mapping, fileSystem))
+}
+
+//ReadRemoteIP : Reads the remote ip address from where the request came.
+func ReadRemoteIP(r *http.Request) string {
+	IPAddress := r.Header.Get("X-Real-Ip")
+	if IPAddress == "" {
+		IPAddress = r.Header.Get("X-Forwarded-For")
+	}
+	if IPAddress == "" {
+		IPAddress = r.RemoteAddr
+	}
+	return IPAddress
+}

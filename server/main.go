@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	network "github.com/govishwavijay/libs"
+	network "github.com/govishwavijay/learning/libs"
 )
 
 func main() {

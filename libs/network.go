@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 )
 
 //FetchMyPublicIP : This function will fetch public ip from ifconfig.co
@@ -17,7 +18,7 @@ func FetchMyPublicIP(host ...string) string {
 	body, err := ioutil.ReadAll(resp.Body)
 	HandleError(err)
 	resp.Body.Close()
-	return string(body)
+	return strings.Trim(string(body), "\t \n")
 }
 
 //HandleError : This function will log the error

@@ -46,3 +46,11 @@ func ReadRemoteIP(r *http.Request) string {
 	}
 	return IPAddress
 }
+
+//RedirectToHTTPS : This will redirect request comming to port 80 to 443
+func RedirectToHTTPS(httpPort int, host string) {
+	http.ListenAndServe(":8080", http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		log.Println("Request came to port 8080 : " + request.RequestURI)
+		http.Redirect(writer, request, "https://"+host+request.RequestURI, http.StatusMovedPermanently)
+	}))
+}

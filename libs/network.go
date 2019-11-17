@@ -57,7 +57,7 @@ func RedirectToHTTPS(httpPort int, host string) {
 }
 
 //GetHomeDirectory : gets current user home directy
-func GetHomeDirectory() {
+func GetHomeDirectory() string {
 	usr, err := user.Current()
 	if err != nil {
 		log.Fatal(err)

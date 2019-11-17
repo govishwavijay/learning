@@ -10,7 +10,7 @@ import (
 
 func main() {
 	log.Println("Starting server________")
-	network.RedirectToHTTPS(8080, "vishwavijay.com")
+	network.RedirectToHTTPS(8080, "www.vishwavijay.com")
 
 	server := http.Server{Addr: ":8443", Handler: nil}
 	http.HandleFunc("/", handleRootContext)

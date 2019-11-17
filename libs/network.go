@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os/user"
 	"strings"
 )
 
@@ -53,4 +54,13 @@ func RedirectToHTTPS(httpPort int, host string) {
 		log.Println("Request came to port 8080 : " + request.RequestURI)
 		http.Redirect(writer, request, "https://"+host+request.RequestURI, 302)
 	}))
+}
+
+//GetHomeDirectory : gets current user home directy
+func GetHomeDirectory() {
+	usr, err := user.Current()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return usr.HomeDir
 }

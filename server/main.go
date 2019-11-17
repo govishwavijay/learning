@@ -16,7 +16,7 @@ func main() {
 	server := http.Server{Addr: ":8080", Handler: nil}
 	http.HandleFunc("/hello", handleRootContext)
 	http.HandleFunc("/favicon.ico", handleFavicon)
-	network.SetStaticContentPath("/", "/home/vishwa/go/bin/static") //create static folder beside this and put UI content
+	network.SetStaticContentPath("/", network.GetHomeDirectory()+"/go/bin/static") //create static folder beside this and put UI content
 	log.Println("Starting server.")
 
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {

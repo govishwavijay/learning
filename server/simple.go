@@ -13,7 +13,7 @@ func main() {
 	network.RedirectToHTTPS(8080, "vishwavijay.com")
 
 	server := http.Server{Addr: ":8443", Handler: nil}
-	httphs.HandleFunc("/", handleRootContext)
+	http.HandleFunc("/", handleRootContext)
 
 	publicKey := "/home/vijay/public.cer"
 	privateKey := "/home/vijay/privatekey.pem"

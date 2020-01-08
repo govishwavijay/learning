@@ -1,4 +1,4 @@
-package network
+package common
 
 import (
 	"io/ioutil"
@@ -31,6 +31,7 @@ func HandleError(err error) {
 
 //SetStaticContentPath : Set the path from where the static content will be served
 func SetStaticContentPath(mapping string, path string) {
+	//http.NotFoundHandler = http.FileServer(http.Dir(path + "index.html")).ServeHTTP
 	log.Println("Static content will be loaded for mapping", mapping, "from path", path)
 	fileSystem := http.FileServer(http.Dir(path))
 	http.Handle(mapping, http.StripPrefix(mapping, fileSystem))
@@ -50,10 +51,13 @@ func ReadRemoteIP(r *http.Request) string {
 
 //RedirectToHTTPS : This will redirect request comming to port 80 to 443
 func RedirectToHTTPS(httpPort int, host string) {
-	http.ListenAndServe(":8080", http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
-		log.Println("Request came to port 8080 : " + request.RequestURI)
-		http.Redirect(writer, request, "https://"+host+request.RequestURI, 302)
-	}))
+	go func() {
+		log.Println("Will redirect port", httpPort, "to host ", host)
+		http.ListenAndServe(":8080", http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+			log.Println("Request came to port 8080 : " + request.RequestURI)
+			http.Redirect(writer, request, "https://"+host+request.RequestURI, 302)
+		}))
+	}()
 }
 
 //GetHomeDirectory : gets current user home directy

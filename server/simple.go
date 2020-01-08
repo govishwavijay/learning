@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	network "github.com/govishwavijay/learning/libs"
 )
@@ -12,11 +13,18 @@ func main() {
 	log.Println("Starting server________")
 	network.RedirectToHTTPS(8080, "www.vishwavijay.com")
 
-	server := http.Server{Addr: ":8443", Handler: nil}
-	http.HandleFunc("/", handleRootContext)
+	network.SetStaticContentPath("/", network.GetHomeDirectory()+"static")
 
-	publicKey := "/home/vijay/public.cer"
-	privateKey := "/home/vijay/privatekey.pem"
+	log.Println("Will listen to port 8443....")
+	server := http.Server{
+		Addr:           ":8443",
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   3 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+		Handler:        http.HandlerFunc(handleRootContext)}
+
+	publicKey := network.GetHomeDirectory() + "/public.cer"
+	privateKey := network.GetHomeDirectory() + "/privatekey.pem"
 	if err := server.ListenAndServeTLS(publicKey, privateKey); err != nil && err != http.ErrServerClosed {
 		log.Fatal(err)
 	}
